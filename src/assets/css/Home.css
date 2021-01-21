@@ -1,0 +1,24 @@
+#contentHome {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+} 
+
+#titleHome{
+    display: block;
+    font-size: 60px;
+    margin-top: 40px;
+    margin-bottom: 80px;
+    color: rgb(31, 31, 31);
+    border-bottom: 2px dashed var(--naranja);
+    padding: 20px 0px 20px 20px;
+}
+
+.buttonHome{
+    display: block;
+    width: 65%;
+    margin: 40px !important;
+    height: 60px !important;
+    border: 1px solid var(--naranja) !important;
+    color: var(--naranja) !important; 
+}

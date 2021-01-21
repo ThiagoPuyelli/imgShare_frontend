@@ -1,0 +1,1 @@
+export var global = "http://localhost:6000/"

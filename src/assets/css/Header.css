@@ -1,0 +1,42 @@
+#content {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    background-color: gray;
+}
+
+#logo{
+    font-size: 25px;
+    font-family: teko;
+    letter-spacing: 1px;
+    transition: 300ms all;
+}
+
+#logo:hover{
+    font-size: 30px;
+    text-shadow: 0px 0px 2px #F05D5E;
+}
+
+#appBar {
+    position: relative !important;
+}
+
+#toolbar{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between; 
+    background-color:  rgb(245, 242, 242);
+    border-bottom: 3px solid #F05D5E;
+}
+
+#linksHeader {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.linkHeader {
+    color: #F05D5E;
+    text-decoration: none;
+    text-transform: none;
+    font-size: 18px;  
+}

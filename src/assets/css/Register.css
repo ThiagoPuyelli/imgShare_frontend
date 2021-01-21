@@ -1,0 +1,92 @@
+#divRegister{
+    display: flex;
+    flex-flow: column wrap;
+    width: 40%;
+    margin: 0 auto;
+    align-items: center;
+    margin-top: 30px;
+    padding-bottom: 30px; 
+    box-shadow: 0px 0px 4px #666;
+    margin-bottom: 40px;
+}
+
+#formRegister{
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+}
+
+#titleRegister{
+    margin-top: 20px;
+    margin-bottom: -10px;
+    color: black;
+    display: block;
+    padding-left: 60px;
+    padding-right: 60px;
+    border-bottom: 3px solid var(--naranja); 
+}
+
+.inputRegister{
+    margin-top: 30px !important;
+}
+
+#contentAvatar{
+    overflow: hidden;
+    border-radius: 999px;
+    width: 60px;
+    height: 60px;
+    margin-top: 20px;
+}
+
+#avatarRegister{
+    width: 110px;
+    margin-left: -24px;
+}
+
+#avatarNone {
+    margin-bottom: -80px;
+    margin-top: 20px;
+}
+
+#labelImage{
+    margin-top: 15px;
+    margin-bottom: -20px; 
+    font-family: varela !important;
+    font-size: 18px;
+    border-bottom: 2px solid var(--naranja);
+}
+
+#submitRegister{
+    margin-top: 20px;
+}
+
+#imageChange{
+    width: 100%;
+}
+
+#slider{
+    display: none;
+}
+
+#slidersVertical{
+    width: 100%; 
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    height: 100px;
+    margin-bottom: 20px;
+}
+
+.sliderLabel{
+    display: none;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.sliderLabelVertical{
+    margin-left: -13px;
+}
+
+#submitRegister{
+    margin-top: -90px;
+}

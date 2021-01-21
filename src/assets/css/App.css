@@ -1,0 +1,13 @@
+@font-face{
+    src: url("../fonts/Teko-Regular.ttf");
+    font-family: teko; 
+}
+
+@font-face{
+    src: url("../fonts/VarelaRound-Regular.ttf");
+    font-family: varela;
+}
+
+.App{
+    font-family: varela !important;
+}
