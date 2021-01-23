@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import { Button, TextField, InputAdornment, Slider, Avatar } from "@material-ui/core";
 import { AccountCircle, Description, Email, Lock } from "@material-ui/icons";
 import "../assets/css/Register.css"; 
+import { global } from "../assets/serverLink";
 
 export class Register extends Component{
     render(){
@@ -43,7 +44,54 @@ export class Register extends Component{
         }
 
         function submitUser(){
-            console.log(user)
+            const errors = []
+            for(let i in user){
+                if(i != "image", i != "positionImage"){
+                    if(user[i] == undefined || user[i] == ""){
+                        errors.push(user[i] + " invalid");
+                    }
+                }
+            }
+            if(errors.length < 1){
+                var userSend = {
+                    username: "",
+                    email: "",
+                    password: ""
+                }
+                if(user.image != undefined){
+                    const formData = new FormData();
+                    for(let i in user){
+                        if(i != "image"){
+                            if(user[i] != "") formData.append(i, user[i]);
+                        } else {
+                            formData.append("image", user.image, user.image.name);
+                        }
+                    }
+                    userSend = formData;
+                } else {
+                    userSend = {
+                        ...userSend,
+                        description: ""
+                    }
+                    for(let i in user){
+                        if(i != "image" && i != "positionImage"){
+                            if(i == "description" && user.description != ""){
+                                userSend[i] = user[i];
+                            }
+                        }
+                    }
+                }
+
+                fetch(global + "users/register", {
+                    method: "POST",
+                    body: userSend,
+                    cors: "no-cors"
+                })
+                .then(response => response.json())
+                .then(resolve => console.log(resolve))
+                .catch(err => console.log(err));
+
+            }
         }
         
         function changeInput(event){
@@ -53,13 +101,6 @@ export class Register extends Component{
         }
 
         function changeFile(event){
-            if(imageFile != undefined){
-                const divSliders = document.querySelector("#slidersDiv");
-                while(divSliders.firstChild){
-                    divSliders.removeChild(divSliders.firstChild);
-                }
-                divSliders.append(<React.Fragment><Sliders/></React.Fragment>);
-            }
             imageFile = event.target.files[0];
             if(imageFile.type.split("/")[0] == "image"){
                 user.image = imageFile;

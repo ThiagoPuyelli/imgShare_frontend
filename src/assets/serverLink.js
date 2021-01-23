@@ -1,1 +1,1 @@
-export var global = "http://localhost:6000/"
+export var global = "http://localhost:7000/"
