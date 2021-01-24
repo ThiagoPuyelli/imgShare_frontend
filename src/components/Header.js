@@ -3,6 +3,7 @@ import "../assets/css/Header.css";
 import {global} from "../assets/serverLink";
 import { BrowserRouter as Router, Link } from "react-router-dom";
 import {AppBar, Toolbar, Button} from "@material-ui/core";
+import {verifyAuth} from "./methods/verifyAuth";
 
 export class Header extends Component {
     constructor(props){
@@ -11,18 +12,10 @@ export class Header extends Component {
     }
     
     componentWillMount(){
-        if(sessionStorage.getItem("x-access-token")){
-            fetch(global + "auth")
-            .then(value => value.json)
-            .then(response => {
-                console.log(response)
-            });
-        } else {
-            this.setState(state => ({
-                auth: false
-            }));
-        }
-        
+        const auth = verifyAuth();
+        this.setState(state => ({
+            auth
+        }))
     }
     
     VerifyAuth(){
@@ -41,13 +34,18 @@ export class Header extends Component {
             }, 50);
         }
 
+        function logout(){
+            sessionStorage.removeItem("x-access-token");
+            window.location.reload();
+        }
+
         function ButtonsAuth() {
             return (
                 <div id="linksHeader">
                     <Button className="linkHeader">     
                     <Link className="linkHeader" onClick={reload} to="/profile">Profile</Link>
                     </Button>
-                    <Button className="linkHeader">     
+                    <Button onClick={logout} className="linkHeader">     
                     <div href="#" className="linkHeader" onClick={reload} id="logout">Logout</div>
                     </Button>
                 </div>

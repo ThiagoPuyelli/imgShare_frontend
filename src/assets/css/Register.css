@@ -94,3 +94,25 @@
 #divSliders{
     width: 100%;
 }
+
+#messageImage,
+#messagePassword{
+    display: none;
+    color: red;
+    margin-top: 5px;
+    font-size: 18px;
+    text-shadow: 0px 0px 1px red;
+}
+
+.messageError{
+    display: none;
+    color: red;
+    font-size: 18px;
+    text-shadow: 0px 0px 1px red;
+}
+
+#messages{
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+}

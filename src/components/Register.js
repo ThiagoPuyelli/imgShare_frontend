@@ -1,10 +1,20 @@
 import React, {Component} from "react";
+import { Redirect } from "react-router-dom";
 import { Button, TextField, InputAdornment, Slider, Avatar } from "@material-ui/core";
 import { AccountCircle, Description, Email, Lock } from "@material-ui/icons";
 import "../assets/css/Register.css"; 
 import { global } from "../assets/serverLink";
+import {verifyAuth} from "./methods/verifyAuth";
 
 export class Register extends Component{
+
+    componentWillMount(){
+        const auth = verifyAuth();
+        if(auth){
+            Redirect("/");
+        }
+    }
+
     render(){
 
         var imageFile = undefined,
@@ -46,11 +56,11 @@ export class Register extends Component{
         function submitUser(){
             const errors = []
             for(let i in user){
-                if(i != "image", i != "positionImage"){
+                if(i != "image" && i != "positionImage"){
                     if(user[i] == undefined || user[i] == ""){
-                        errors.push(user[i] + " invalid");
+                        errors.push("message" + i);
                     }
-                }
+                } 
             }
             if(errors.length < 1){
                 var userSend = {
@@ -88,21 +98,49 @@ export class Register extends Component{
                     cors: "no-cors"
                 })
                 .then(response => response.json())
-                .then(resolve => console.log(resolve))
+                .then(resolve => {
+                    if(resolve.token){
+                        sessionStorage.setItem("x-access-token", resolve.token);
+                        window.location.reload();
+                    }
+                })
                 .catch(err => console.log(err));
 
+            } else {
+                for(let i of errors) {
+                    try{
+                        const message = document.querySelector("#" + i);
+                        message.style.display = "block";
+                    } catch(err){
+                        console.log(err)
+                    }
+                }
             }
         }
         
         function changeInput(event){
-            const value = event.target.value
+            const value = event.target.value;
             const data  = event.target.getAttribute("name");
-            user[data] = value;
+            const input = document.querySelector(".input" + data);
+            if(data != "description" && data != "password" && value == ""){
+                document.querySelector(".input" + data + " label").style.color = "red";
+                input.style.borderBottom = "3px solid red"
+            } else if(data == "password" && value.length < 4){
+                document.querySelector(".input" + data + " label").style.color = "red";
+                input.style.borderBottom = "3px solid red"
+                document.querySelector("#messagePassword").style.display = "block";
+            } else if(data != "description") {
+                user[data] = value;
+                document.querySelector(".input" + data + " label").style.color = "green";
+                input.style.borderBottom = "3px solid green"
+                if(data == "password") document.querySelector("#messagePassword").style.display = "none"
+            }
         }
 
         function changeFile(event){
             imageFile = event.target.files[0];
             if(imageFile.type.split("/")[0] == "image"){
+                document.querySelector("#messageImage").style.display = "none";
                 user.image = imageFile;
                 srcToAvatar = URL.createObjectURL(imageFile);
                 const avatarRegister = document.querySelector("#avatarRegister");
@@ -121,10 +159,12 @@ export class Register extends Component{
                 document.querySelector(".sliderHorizontal span[role='slider']").setAttribute("aria-valuemax", 24);
                 document.querySelector(".sliderVertical span[role='slider']").setAttribute("aria-valuemax", 1);
                 document.querySelector(".sliderVertical span[role='slider']").setAttribute("aria-valuemin", -1);
+            } else {
+                document.querySelector("#messageImage").style.display = "block";
             }
         }
 
-        function calculeValue(span, max, min, porcent){
+        function calculeValue(max, min, porcent){
 
             if(parseInt(min) < 0){
                 const value = porcent * (parseInt(max) / 2) / 100;
@@ -136,21 +176,21 @@ export class Register extends Component{
         }
 
         async function sliderChangeHorizontal(){
-            const input = document.querySelector(".sliderHorizontal input[type='hidden']");
             const porcent = document.querySelector(".sliderHorizontal .MuiSlider-track").getAttribute("style").split("h: ")[1];
             const max = document.querySelector(".sliderHorizontal span[role='slider']").getAttribute("aria-valuemax");
-            const value = await calculeValue(input, porcent, 0, max)
+            var value = await calculeValue(porcent, 0, max)
+            value = value * 2;
+            value = value - (positionImageSize - 110);
             positionImageWidth = value;
             user.positionImage = value + " " + user.positionImage.split(" ")[1] + " " + user.positionImage.split(" ")[2]; 
             document.querySelector("#avatarRegister").style.marginLeft = "-" + value + "px";
         }
 
         async function sliderChangeVertical(){
-            const input = document.querySelector(".sliderVertical input[type='hidden']");
             const porcent = document.querySelector(".sliderVertical .MuiSlider-track").getAttribute("style").split("ht: ")[1];
             const max = document.querySelector(".sliderVertical span[role='slider']").getAttribute("aria-valuemax");
             const min = document.querySelector(".sliderVertical span[role='slider']").getAttribute("aria-valuemin");
-            const value = await calculeValue(input, porcent, min, max)
+            const value = await calculeValue(porcent, min, max)
             positionImageVertical = value;
             user.positionImage = user.positionImage.split(" ")[0] + " " + value + " " + user.positionImage.split(" ")[2]; 
             document.querySelector("#avatarRegister").style.marginTop = value + "px"; 
@@ -178,28 +218,29 @@ export class Register extends Component{
             <div id="divRegister">
                 <h1 id="titleRegister">Register</h1>
                 <form id="formRegister" autoComplete="off">
-                    <TextField className="inputRegister" onChange={(event) => changeInput(event)} InputProps={{
+                    <TextField className="inputRegister inputusername" onChange={(event) => changeInput(event)} InputProps={{
                         startAdornment: (
                             <InputAdornment position="start">
                                 <AccountCircle />
                             </InputAdornment>
                         )
                     }} label="Username"  type="text" placeholder="Username" name="username" />
-                    <TextField className="inputRegister" onChange={(event) => changeInput(event)} InputProps={{
+                    <TextField className="inputRegister inputemail" onChange={(event) => changeInput(event)} InputProps={{
                         startAdornment: (
                             <InputAdornment position="start">
                                 <Email />
                             </InputAdornment>
                         )
                     }} label="Email"  type="email" placeholder="Email" name="email" />
-                    <TextField className="inputRegister" onChange={(event) => changeInput(event)} InputProps={{
+                    <TextField className="inputRegister inputpassword" onChange={(event) => changeInput(event)} InputProps={{
                         startAdornment: (
                             <InputAdornment position="start">
                                 <Lock />
                             </InputAdornment>
                         )
                     }} label="Password"  type="password" placeholder="Password" name="password" />
-                    <TextField className="inputRegister" onChange={(event) => changeInput(event)} InputProps={{
+                    <span id="messagePassword">4 characters minimum</span>
+                    <TextField className="inputRegister inputdescription" onChange={(event) => changeInput(event)} InputProps={{
                         startAdornment: (
                             <InputAdornment position="start">
                                 <Description />
@@ -208,6 +249,7 @@ export class Register extends Component{
                     }} label="Description" name="description" multiline placeholder="Description (optional)" />
                     <label id="labelImage">Avatar</label>
                     <input className="inputRegister" onChange={(event) => changeFile(event)} placeholder="avatar"  type="file" id="inputImage" />
+                    <span id="messageImage">El archivo no es una imagen</span>
                     <Avatar id="avatarNone" />
                     <div id="contentAvatar">
                     <img id="avatarRegister" src={AccountCircle} />
@@ -216,6 +258,11 @@ export class Register extends Component{
                         <Sliders />
                     </div>
                     <Button id="submitRegister" onClick={submitUser} variant="contained" >Submit</Button>
+                    <div id="messages">
+                    <span className="messageError" id="messageusername">Username is required</span>
+                    <span className="messageError" id="messageemail">Email is required</span>
+                    <span className="messageError" id="messagepassword">In password 4 characters minimum</span>
+                    </div>
                 </form>  
             </div>
         </div>

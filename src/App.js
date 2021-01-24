@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import { Login } from "./components/Login";
 import { Register } from "./components/Register";
 import { Home } from "./components/Home";
+import { HomeAuth } from "./components/HomeAuth";
+import {verifyAuth} from "./components/methods/verifyAuth";
 
 function App() {
 
@@ -28,22 +30,18 @@ function App() {
     return (
       <Switch>
         <Route to="/">
-          <Home />
+          <HomeAuth />
         </Route>
       </Switch>
     )
   }
 
   function Content(){
-    if(sessionStorage.getItem("x-access-token")){
-      fetch(global + "auth")
-      .then(value => value.json)
-      .then(response => {
-          console.log(response);
-          return <Auth />;
-      });
+    const auth = verifyAuth();
+    if(auth == true){
+      return <Auth />
     } else {
-        return <NoAuth />;
+      return <NoAuth />
     }
   }
   
