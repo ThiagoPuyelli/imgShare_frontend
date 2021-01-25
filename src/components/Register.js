@@ -54,9 +54,10 @@ export class Register extends Component{
         }
 
         function submitUser(){
+            console.log(user)
             const errors = []
             for(let i in user){
-                if(i != "image" && i != "positionImage"){
+                if(i != "image" && i != "positionImage" && i != "description"){
                     if(user[i] == undefined || user[i] == ""){
                         errors.push("message" + i);
                     }
@@ -134,6 +135,8 @@ export class Register extends Component{
                 document.querySelector(".input" + data + " label").style.color = "green";
                 input.style.borderBottom = "3px solid green"
                 if(data == "password") document.querySelector("#messagePassword").style.display = "none"
+            } else if(data == "description"){
+                user[data] = value;
             }
         }
 
