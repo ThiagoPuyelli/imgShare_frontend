@@ -1,0 +1,51 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+#divFormulario{
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    margin: 0px auto;
+    width: 60%;
+    margin-top: 40px;
+}
+
+#formCreate{
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.inputCreate{
+    margin-top: 20px !important;
+}
+
+.inputDescriptionCreate{
+    width: 100% !important;
+}
+
+#divImage{
+    padding: 0px;
+    margin-top: 30px;
+    border: 10px solid black;
+    width: 450px;
+    height: 240px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 4px black;
+}
+
+#imagePost{
+    width: 100%;
+    height: 100%;
+}
+
+#messageErrorImage{
+    display: none;
+    color: red;
+    margin-top: 20px;
+    font-size: 18px;
+    text-shadow: 0px 0px 1px red; 
+}

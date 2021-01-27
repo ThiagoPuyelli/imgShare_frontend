@@ -1,9 +1,9 @@
 import {Component} from "react";
 import "../assets/css/Header.css";
-import {global} from "../assets/serverLink";
 import { BrowserRouter as Router, Link } from "react-router-dom";
 import {AppBar, Toolbar, Button} from "@material-ui/core";
 import {verifyAuth} from "./methods/verifyAuth";
+import {CreatePost} from "./CreatePost";
 
 export class Header extends Component {
     constructor(props){
@@ -47,6 +47,9 @@ export class Header extends Component {
                     </Button>
                     <Button onClick={logout} className="linkHeader">     
                     <div href="#" className="linkHeader" onClick={reload} id="logout">Logout</div>
+                    </Button>
+                    <Button className="linkHeader">
+                        <Link className="linkHeader" onClick={reload} to="/create">Public Post</Link>
                     </Button>
                 </div>
             )

@@ -1,7 +1,10 @@
 import {Component} from "react";
+import {ListPosts} from "./ListPosts";
 
 export class HomeAuth extends Component{
     render(){
-        return <h1>Home Auth</h1>
+        return (
+            <ListPosts />
+        )
     }
 }

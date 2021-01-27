@@ -5,6 +5,7 @@ import { Login } from "./components/Login";
 import { Register } from "./components/Register";
 import { Home } from "./components/Home";
 import { HomeAuth } from "./components/HomeAuth";
+import { CreatePost } from "./components/CreatePost";
 import {verifyAuth} from "./components/methods/verifyAuth";
 
 function App() {
