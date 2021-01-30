@@ -1,20 +1,29 @@
 import {Component} from "react";
 import "../assets/css/ListPosts.css";
 import {global} from "../assets/serverLink";
-import { Favorite, FavoriteBorder } from "@material-ui/icons";
+import { CollectionsOutlined, Favorite, FavoriteBorder } from "@material-ui/icons";
 
 export class ListPosts extends Component{
 
     constructor(props){
         super(props);
         this.state = {
-            posts: []
+            posts: [],
+            like: false
         };
 
-        this.Posts = this.Posts.bind(this);
+        this.getPosts = this.getPosts.bind(this);
+        this.Posts = this.Posts.bind(this)
+        this.verifyLike = this.verifyLike.bind(this);
+
     }
 
-    componentWillMount(){
+    componentDidMount(){
+        this.getPosts();
+        setTimeout(() => this.verifyLike(), 500)
+    }
+
+    getPosts(){
         fetch(global + "posts", {
             method: "GET",
             headers: {
@@ -23,15 +32,77 @@ export class ListPosts extends Component{
         })
         .then(response => response.json())
         .then(result => {
-            console.log(result)
             this.setState(state => ({
                 posts: result
             }))
         })
         .catch(err => console.log(err))
     }
+    
+    verifyLike(){
+        for(let i in this.state.posts){
+            fetch(global + "lik-verify/" + this.state.posts[i].id, {
+                method: "GET",
+                headers: {
+                    "x-access-token": sessionStorage.getItem("x-access-token")
+                }
+            })
+            .then(response => response.json())
+            .then(result => {
+                if(result.lik == true){
+                    this.setState(state => ({
+                        ["like" + this.state.posts[i].id]: true
+                    })) 
+                }
+                
+            })
+            .catch(err => console.log(err));
+        }
+    }
+    
+    Post(srcImage, likes, description, username, id){
 
+        if(this.state["like" + id]){
+            document.querySelector("#post" + id + " .favoriteBorder").style.display = "none";
+            document.querySelector("#post" + id + " .favorite").style.display = "block";
+        }
+        
+        return (
+            <div className="post" id={"post" + id}>
+                <img src={srcImage} className="postImage" />
+                <div className="divUserLikes">
+                    <a className="postUser" href="#">{username}</a>
+                    <span className="postLikes">
+                        <span className="postFavorite favoriteBorder" onClick={(event) => {this.likPost(id)}} ><FavoriteBorder /></span>
+                        <span className="postFavorite favorite" onClick={(event) => this.deleteLikPost(id)} ><Favorite /></span>
+                        <a><span className="postNumberLikes">{likes}</span></a>
+                    </span>
+                </div>
+                {description != "" && 
+                <p className="postDescription">{description}</p>
+                }
+            </div>
+        )
+    }
+
+    Posts(){
+
+        var arrayPosts = [];
+        for(let i of this.state.posts) {
+            arrayPosts.push(this.Post(i.image, i.likes, i.description, i.user.username, i.id))
+            console.log(this.state["like" + i.id])
+        }
+
+        return arrayPosts
+    }
+    
     likPost(id){
+        var number = document.querySelector("#post" + id +  " .postNumberLikes");
+        number.innerHTML = parseInt(number.innerHTML) + 1;
+        var inputLike = document.querySelector("#post" + id + " .favoriteBorder");
+        var like = document.querySelector("#post" + id + " .favorite");
+        inputLike.style.display = "none";
+        like.style.display = "block";
         fetch(global + "lik-verify/" + id, {
             method: "GET",
             headers: {
@@ -49,59 +120,47 @@ export class ListPosts extends Component{
                 })
                 .then(response => response.json())
                 .then(res => {
-                    var inputLike = document.querySelector("#post" + id + " .postFavorite");
-                    inputLike.style.marginTop = "-10px";
-                    inputLike.innerHTML = <Favorite />;
-                    inputLike.style.marginTop = "0px";
                 })
-                .catch(err => console.log(err))          
+                .catch(err =>{
+                    var number = document.querySelector("#post" + id +  " .postNumberLikes");
+                    number.innerHTML = parseInt(number.innerHTML) - 1;
+                    var inputLike = document.querySelector("#post" + id + " .favorite");
+                    var like = document.querySelector("#post" + id + " .favoriteBorder");
+                    inputLike.style.display = "none";
+                    like.style.display = "block";
+                })          
             } 
         })
         .catch(err => console.log(err))
     }
 
-    Post(srcImage, likes, description, username, id){
-
-        var favorite = <FavoriteBorder />;
-
-        fetch(global + "lik-verify/" + id, {
-            method: "GET",
+    deleteLikPost(id){
+        var number = document.querySelector("#post" + id +  " .postNumberLikes");
+        number.innerHTML = parseInt(number.innerHTML) - 1;
+        var inputLike = document.querySelector("#post" + id + " .favorite");
+        var like = document.querySelector("#post" + id + " .favoriteBorder");
+        inputLike.style.display = "none";
+        like.style.display = "block";
+        fetch(global + "lik/" + id, {
+            method: "DELETE",
             headers: {
                 "x-access-token": sessionStorage.getItem("x-access-token")
             }
         })
         .then(response => response.json())
         .then(result => {
-            if(result.lik == true){
-                favorite = <Favorite />;
 
-            }
         })
-        .catch(err => console.log(err));
-        
-        return (
-            <div className="post" id={"post" + id}>
-                <img src={srcImage} className="postImage" />
-                <div className="divUserLikes">
-                    <a className="postUser" href="#">{username}</a>
-                    <span className="postLikes">
-                        <span className="postFavorite" onClick={(event) => this.likPost(id)}>{favorite}</span>
-                        <span className="postNumberLikes">{likes}</span>
-                    </span>
-                </div>
-                {description != "" && 
-                <p className="postDescription">{description}</p>
-                }
-            </div>
-        )
+        .catch(err => {
+            var number = document.querySelector("#post" + id +  " .postNumberLikes");
+            number.innerHTML = parseInt(number.innerHTML) + 1;
+            var inputLike = document.querySelector("#post" + id + " .favoriteBorder");
+            var like = document.querySelector("#post" + id + " .favorite");
+            inputLike.style.display = "none";
+            like.style.display = "block";
+        });
     }
-
-    Posts(){
-        var arrayPosts = []
-        for(let i of this.state.posts) arrayPosts.push(this.Post(i.image, i.likes, i.description, i.user.username, i.id))
-        return arrayPosts;
-    }
-
+    
     render(){
 
         return (

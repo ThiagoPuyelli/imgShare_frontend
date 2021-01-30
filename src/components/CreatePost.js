@@ -88,7 +88,9 @@ export class CreatePost extends Component{
                 }
             })
             .then(response => response.json())
-            .then(response => Redirect("/"))
+            .then(async response => {
+                await Redirect("/")
+            })
             .catch(err => console.log(err));
         }
 

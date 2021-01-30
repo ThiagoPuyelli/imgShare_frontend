@@ -30,7 +30,10 @@ function App() {
   function Auth(){
     return (
       <Switch>
-        <Route to="/">
+        <Route path="/create">
+          <CreatePost />
+        </Route>
+        <Route path="/">
           <HomeAuth />
         </Route>
       </Switch>

@@ -4,11 +4,35 @@ import { BrowserRouter as Router, Link } from "react-router-dom";
 import {AppBar, Toolbar, Button} from "@material-ui/core";
 import {verifyAuth} from "./methods/verifyAuth";
 import {CreatePost} from "./CreatePost";
+import {global} from "../assets/serverLink";
 
 export class Header extends Component {
     constructor(props){
         super(props);
-        
+        this.state = {
+            image: {}
+        }
+
+        this.findImage = this.findImage.bind(this);
+        this.Avatar = this.Avatar.bind(this);
+    }
+
+    findImage(){
+        if(sessionStorage.getItem("x-access-token")){
+            fetch(global + "users/" + sessionStorage.getItem("x-access-token").split("|")[1], {
+                method: "GET",
+                headers: {
+                    "x-access-token": sessionStorage.getItem("x-access-token")
+                }
+            } )
+            .then(response => response.json())
+            .then(res => {
+                this.setState(state => ({
+                    image: res.image
+                }))
+            })
+            .catch(err => console.log(err));
+        }
     }
     
     componentWillMount(){
@@ -16,6 +40,7 @@ export class Header extends Component {
         this.setState(state => ({
             auth
         }))
+        this.findImage();
     }
     
     VerifyAuth(){
@@ -24,6 +49,10 @@ export class Header extends Component {
         } else {
             return false
         }
+    }
+
+    Avatar(){
+        return this.state.image;
     }
     
     render(){
@@ -39,11 +68,18 @@ export class Header extends Component {
             window.location.reload();
         }
 
+        function returnAvatar(){
+            console.log(this.Avatar());
+        }
+
         function ButtonsAuth() {
+
             return (
                 <div id="linksHeader">
                     <Button className="linkHeader">     
-                    <Link className="linkHeader" onClick={reload} to="/profile">Profile</Link>
+                    <Link className="linkHeader" onClick={reload} to="/profile">
+                        Profile
+                        </Link>
                     </Button>
                     <Button onClick={logout} className="linkHeader">     
                     <div href="#" className="linkHeader" onClick={reload} id="logout">Logout</div>
