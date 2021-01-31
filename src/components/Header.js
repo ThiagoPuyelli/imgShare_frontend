@@ -1,20 +1,21 @@
 import {Component} from "react";
 import "../assets/css/Header.css";
 import { BrowserRouter as Router, Link } from "react-router-dom";
-import {AppBar, Toolbar, Button} from "@material-ui/core";
+import {AppBar, Toolbar, Button, makeStyles} from "@material-ui/core";
 import {verifyAuth} from "./methods/verifyAuth";
-import {CreatePost} from "./CreatePost";
 import {global} from "../assets/serverLink";
 
 export class Header extends Component {
+
     constructor(props){
         super(props);
         this.state = {
-            image: {}
+            image: {},
+            positionImage: "-24 0 110"
         }
-
+        
         this.findImage = this.findImage.bind(this);
-        this.Avatar = this.Avatar.bind(this);
+        this.returnImage = this.returnImage.bind(this);
     }
 
     findImage(){
@@ -28,7 +29,8 @@ export class Header extends Component {
             .then(response => response.json())
             .then(res => {
                 this.setState(state => ({
-                    image: res.image
+                    image: res.image,
+                    positionImage: res.positionImage
                 }))
             })
             .catch(err => console.log(err));
@@ -43,6 +45,16 @@ export class Header extends Component {
         this.findImage();
     }
     
+    useStyles = (marginLeft, marginTop, width) =>  {
+        return makeStyles({
+            imageAvatar: {
+                marginLeft,
+                marginTop,
+                width
+            }
+        }
+    )}
+    
     VerifyAuth(){
         if(this.state.auth){
             return true
@@ -51,11 +63,29 @@ export class Header extends Component {
         }
     }
 
-    Avatar(){
-        return this.state.image;
+    returnImage(){
+        console.log(this.state.positionImage.split(" ")[0])
+        var marginLeft
+        if(parseInt(this.state.positionImage.split(" ")[0] <= 0)){
+            marginLeft = 0 + "px !important";
+        } else {
+            marginLeft = "-" + this.state.positionImage.split(" ")[0] + "px !important";
+        }
+        const marginTop = this.state.positionImage.split(" ")[1] + "px !important";
+        const width = this.state.positionImage.split(" ")[2] + "px !important";
+        const styles = this.useStyles(marginLeft, marginTop, width);
+        console.log(marginLeft, marginTop, width)
+
+        return (
+            <div id="contentAvatar">
+                <img src={this.state.image} id="avatarRegister" className={styles().imageAvatar} />
+            </div>
+        )
     }
     
     render(){
+
+        var ImageProfile = this.returnImage;
 
         function reload() {
             setTimeout(() => {
@@ -67,17 +97,15 @@ export class Header extends Component {
             sessionStorage.removeItem("x-access-token");
             window.location.reload();
         }
-
-        function returnAvatar(){
-            console.log(this.Avatar());
-        }
+       
 
         function ButtonsAuth() {
 
             return (
                 <div id="linksHeader">
                     <Button className="linkHeader">     
-                    <Link className="linkHeader" onClick={reload} to="/profile">
+                    <Link className="linkHeader" id="linkProfile" onClick={reload} to="/profile">
+                        <ImageProfile />
                         Profile
                         </Link>
                     </Button>

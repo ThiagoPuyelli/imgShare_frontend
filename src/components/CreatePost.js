@@ -88,8 +88,11 @@ export class CreatePost extends Component{
                 }
             })
             .then(response => response.json())
-            .then(async response => {
-                await Redirect("/")
+            .then(response => {
+                if(response){
+                    Redirect("/")
+                    window.location.reload();
+                }
             })
             .catch(err => console.log(err));
         }

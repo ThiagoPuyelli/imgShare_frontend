@@ -40,3 +40,15 @@
     text-transform: none;
     font-size: 18px;  
 }
+
+#linkProfile{
+    display: flex;
+    flex-flow: row wrap;
+    width: 130px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#contentAvatar{
+    margin-top: 0px !important;
+}
