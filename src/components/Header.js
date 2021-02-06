@@ -52,8 +52,8 @@ export class Header extends Component {
                 marginTop,
                 width
             }
-        }
-    )}
+        })
+    }
     
     VerifyAuth(){
         if(this.state.auth){
@@ -64,7 +64,6 @@ export class Header extends Component {
     }
 
     returnImage(){
-        console.log(this.state.positionImage.split(" ")[0])
         var marginLeft
         if(parseInt(this.state.positionImage.split(" ")[0] <= 0)){
             marginLeft = 0 + "px !important";
@@ -74,7 +73,6 @@ export class Header extends Component {
         const marginTop = this.state.positionImage.split(" ")[1] + "px !important";
         const width = this.state.positionImage.split(" ")[2] + "px !important";
         const styles = this.useStyles(marginLeft, marginTop, width);
-        console.log(marginLeft, marginTop, width)
 
         return (
             <div id="contentAvatar">
@@ -93,6 +91,13 @@ export class Header extends Component {
             }, 50);
         }
 
+        function reloadProfile(){
+            setTimeout(() => {
+                sessionStorage.setItem("userID", sessionStorage.getItem("x-access-token").split("|")[1]);
+                window.location.reload();
+            })
+        }
+
         function logout(){
             sessionStorage.removeItem("x-access-token");
             window.location.reload();
@@ -104,7 +109,7 @@ export class Header extends Component {
             return (
                 <div id="linksHeader">
                     <Button className="linkHeader">     
-                    <Link className="linkHeader" id="linkProfile" onClick={reload} to="/profile">
+                    <Link className="linkHeader" id="linkProfile" onClick={reloadProfile} to="/profile">
                         <ImageProfile />
                         Profile
                         </Link>
