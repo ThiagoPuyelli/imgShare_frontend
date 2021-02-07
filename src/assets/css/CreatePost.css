@@ -21,6 +21,7 @@
 
 .inputCreate{
     margin-top: 20px !important;
+    margin-bottom: 30px !important;
 }
 
 .inputDescriptionCreate{
@@ -48,4 +49,24 @@
     margin-top: 20px;
     font-size: 18px;
     text-shadow: 0px 0px 1px red; 
+}
+
+@media (max-width: 786px){
+    #divFormulario{
+        width: 100%;
+    }
+}
+
+@media (max-width: 460px) {
+    #divImage{
+        width: 300px;
+        height: 180px;
+    }
+}
+
+@media (max-width: 400px){
+    #divFormulario{
+        padding-left: 20px;
+        padding-right: 20px;
+    }
 }

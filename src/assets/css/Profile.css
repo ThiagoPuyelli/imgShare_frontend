@@ -10,18 +10,28 @@
     display: flex;
     flex-flow: row wrap;
     justify-content: space-around;
-    margin-right: 300px;
-    margin-top: 30px !important;
+    margin-right: 200px;
+    margin-top: 60px !important;
+}
+
+#postsText{
+    font-size: 17px;
 }
 
 #postsText b{
-    margin-right: 15px;
+    margin-right: 10px;
+}
+
+#descriptionText{
+    display: block;
+    font-size: 20px;
+    margin-top: 30px;
 }
 
 #posts{
     display: flex; 
     flex-flow: row wrap;
-    margin-top: 100px;
+    margin-top: 50px;
     justify-content: center;
 }
 
@@ -31,14 +41,7 @@
     height: 260px;
     box-shadow: 0px 0px 4px black;
     padding: 20px;
-    cursor: pointer;
-    transition: 300ms all;
     padding-bottom: 70px;
-}
-
-
-.postProfile:hover{
-    transform: scale(1.1, 1.1);
 }
 
 .postProfile img{
@@ -57,4 +60,49 @@
 
 .favoriteProfile{
     color: red;
+}
+
+.contentAvatarProfile{
+    transform: scale(1.5, 1.5);
+}
+
+#usernameProfile{
+    font-size: 50px; 
+}
+
+.favorite{
+    display: none;
+}
+
+.favoriteBorder,
+.favorite {
+    color: red;
+    cursor: pointer;
+    transition: 300ms all;
+}
+
+.favoriteBorder:hover,
+.favorite:hover{
+    transform: scale(1.2, 1.2);
+}
+
+@media (max-width: 748px){
+    #imageTitle{
+        width: 60%;
+        margin: 0px;
+    }
+}
+
+@media (max-width: 438px){
+    .postProfile{
+        width: 100%;
+        box-shadow: none;
+    }
+    #contentAvatar{
+        margin-right: 20px;
+    }
+
+    #usernameProfile{
+        margin-top: 20px; 
+    }
 }

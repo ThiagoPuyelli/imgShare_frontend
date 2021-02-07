@@ -27,6 +27,7 @@
     justify-content: space-between; 
     background-color:  rgb(245, 242, 242);
     border-bottom: 3px solid #F05D5E;
+    transition: 300ms all;
 }
 
 #linksHeader {
@@ -51,4 +52,37 @@
 
 #contentAvatar{
     margin-top: 0px !important;
+}
+
+.imageToggle{
+    display: none;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    right: 15px;
+    top: 15px; 
+    transition: 300ms all;
+}
+
+@media (max-width: 442px){
+    .linksHeaderAuth{
+        display: flex;
+        flex-flow: column wrap !important;
+        justify-content: right;
+        margin-top: 70px;
+        margin-right: -20px; 
+    }
+    #logo{
+        margin-top: -160px;
+    }
+    .imageToggle{
+        display: block;
+    }
+    #toolbar{
+        height: 75px;
+        overflow: hidden;
+    }
+    .linkHeaderAuth{
+        margin-right: 0px;
+    }
 }

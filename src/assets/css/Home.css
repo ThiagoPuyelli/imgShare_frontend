@@ -22,3 +22,22 @@
     border: 1px solid var(--naranja) !important;
     color: var(--naranja) !important; 
 }
+
+@media (max-width: 710px){
+    #titleHome {
+        border: none;
+        font-size: 40px;
+    }
+}
+
+@media (max-width: 480px){
+    #titleHome{
+        font-size: 30px;
+    }
+}
+
+@media (max-width: 366px){
+    #titleHome{
+        font-size: 20px;
+    }
+}

@@ -2,6 +2,7 @@ import {Component} from "react";
 import "../assets/css/ListPosts.css";
 import {global} from "../assets/serverLink";
 import { CollectionsOutlined, Favorite, FavoriteBorder } from "@material-ui/icons";
+import { Redirect } from "react-router-dom";
 
 export class ListPosts extends Component{
 
@@ -59,6 +60,11 @@ export class ListPosts extends Component{
             .catch(err => console.log(err));
         }
     }
+
+    redirectProfile(id){
+        sessionStorage.setItem("userID", id);
+        Redirect("/profile");
+    }
     
     Post(srcImage, likes, description, username, id){
 
@@ -68,10 +74,10 @@ export class ListPosts extends Component{
         }
         
         return (
-            <div className="post" id={"post" + id}>
+            <div className="post" id={"post" + id} >
                 <img src={srcImage} className="postImage" />
                 <div className="divUserLikes">
-                    <a className="postUser" href="#">{username}</a>
+                    <a className="postUser" href={"/profile/" + id}>{username}</a>
                     <span className="postLikes">
                         <span className="postFavorite favoriteBorder" onClick={(event) => {this.likPost(id)}} ><FavoriteBorder /></span>
                         <span className="postFavorite favorite" onClick={(event) => this.deleteLikPost(id)} ><Favorite /></span>

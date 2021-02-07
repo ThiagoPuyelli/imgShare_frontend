@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Link } from "react-router-dom";
 import {AppBar, Toolbar, Button, makeStyles} from "@material-ui/core";
 import {verifyAuth} from "./methods/verifyAuth";
 import {global} from "../assets/serverLink";
+import menuSvg from "../assets/img/menu.svg";
 
 export class Header extends Component {
 
@@ -82,8 +83,9 @@ export class Header extends Component {
     }
     
     render(){
-
+        
         var ImageProfile = this.returnImage;
+        var header = document.querySelector("#toolbar");
 
         function reload() {
             setTimeout(() => {
@@ -103,23 +105,34 @@ export class Header extends Component {
             window.location.reload();
         }
        
+        function toogle(){
+            var imageToggle = document.querySelector(".imageToggle");
+            if(header.style.height == "75px"){
+                imageToggle.style.transform = "rotateZ(90deg)"
+                header.style.height = "231px";
+            } else {
+                imageToggle.style.transform = "rotateZ(0deg)"
+                header.style.height = "75px";
+            }
+        }
 
         function ButtonsAuth() {
 
             return (
-                <div id="linksHeader">
-                    <Button className="linkHeader">     
-                    <Link className="linkHeader" id="linkProfile" onClick={reloadProfile} to="/profile">
+                <div id="linksHeader" className="linksHeaderAuth">
+                    <Button className="linkHeader linkHeaderAuth">     
+                    <Link className="linkHeader linkHeaderAuth" id="linkProfile" onClick={reloadProfile} to="/profile">
                         <ImageProfile />
                         Profile
                         </Link>
                     </Button>
-                    <Button onClick={logout} className="linkHeader">     
-                    <div href="#" className="linkHeader" onClick={reload} id="logout">Logout</div>
+                    <Button onClick={logout} className="linkHeader linkHeaderAuth">     
+                    <div href="#" className="linkHeader linkHeaderAuth" onClick={reload} id="logout">Logout</div>
                     </Button>
-                    <Button className="linkHeader">
-                        <Link className="linkHeader" onClick={reload} to="/create">Public Post</Link>
+                    <Button className="linkHeader linkHeaderAuth">
+                        <Link className="linkHeader linkHeaderAuth" onClick={reload} to="/create">Public Post</Link>
                     </Button>
+                    <img src={menuSvg} className="imageToggle" onClick={toogle} />
                 </div>
             )
         }

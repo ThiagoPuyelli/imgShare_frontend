@@ -12,7 +12,7 @@ export class HomeAuth extends Component{
                 <Switch>
                     <Route path="/profile" children={<Profile />} />
                     <Route path="/">
-                        <ListLikesPosts />
+                        <ListPosts />
                     </Route>
                 </Switch>
             </Router>
